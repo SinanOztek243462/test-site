@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tek Kişilik Özel Alan | 0-Maliyet Sunucu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+
+    <!-- Giriş ve Kilit Ekranı -->
+    <div id="auth-screen" class="container auth-container">
+        <div class="card glass-card auth-card">
+            <div class="shield-icon">🔒</div>
+            <h1 class="gradient-text">Tek Kişilik Özel Sunucu</h1>
+            <p class="subtitle">Bu site sıfır maliyetle oluşturulmuştur ve <strong>aynı anda sadece 1 kişinin</strong> girişine izin verir.</p>
+            
+            <div id="occupied-warning" class="alert-box alert-danger hidden">
+                ⚠️ <strong>Sunucu Meşgul:</strong> Başka bir aktif oturum var. Bu sunucu sadece 1 kişiliktir!
+            </div>
+
+            <div id="login-form-area">
+                <div class="input-group">
+                    <label for="password-input">Erişim Anahtarı (PIN / Şifre)</label>
+                    <input type="password" id="password-input" placeholder="Şifrenizi girin..." autofocus autocomplete="off">
+                </div>
+                <button id="btn-login" class="btn btn-primary">
+                    <span>Güvenli Giriş Yap</span>
+                    <span class="arrow">→</span>
+                </button>
+                <div id="login-error" class="error-msg"></div>
+            </div>
+
+            <div class="card-footer">
+                <span class="badge badge-success">● Sunucu Aktif</span>
+                <span class="badge badge-info">Maliyet: $0 / 0₺</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana Panel (Giriş Yapılınca Açılan Kişisel Alan) -->
+    <div id="app-screen" class="container main-container hidden">
+        <header class="navbar glass-card">
+            <div class="brand">
+                <span class="logo-dot"></span>
+                <h2>Özel Alanım</h2>
+                <span class="badge badge-private">Kapasite: 1 / 1 Kişi (Sadece Sen)</span>
+            </div>
+            <div class="nav-actions">
+                <span id="uptime-badge" class="badge badge-neutral">Uptime: 0s</span>
+                <button id="btn-logout" class="btn btn-secondary btn-sm">Çıkış Yap & Kilitle</button>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Sol Panel: Sunucu & Domain Bilgileri -->
+            <div class="dashboard-col col-left">
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3>🌐 Sunucu & Domain Durumu</h3>
+                    </div>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="label">Maliyet</span>
+                            <span class="value text-success font-bold">0.00 TL (Tamamen Bedava)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Kullanıcı Limiti</span>
+                            <span class="value font-bold text-accent">Maksimum 1 Kişi</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Şu Anki Durum</span>
+                            <span class="value text-success">● Aktif ve Çevrimiçi</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Bellek (RAM)</span>
+                            <span class="value" id="ram-info">Yükleniyor...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Node.js Sürümü</span>
+                            <span class="value" id="node-info">v24</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hızlı Görevler -->
+                <div class="card glass-card mt-4">
+                    <div class="card-header">
+                        <h3>✓ Kişisel Yapılacaklar</h3>
+                    </div>
+                    <div class="task-input-row">
+                        <input type="text" id="new-task-input" placeholder="Yeni görev ekle...">
+                        <button id="btn-add-task" class="btn btn-primary btn-sm">+</button>
+                    </div>
+                    <ul id="task-list" class="task-list"></ul>
+                </div>
+            </div>
+
+            <!-- Sağ Panel: Kişisel Notlar & Depo -->
+            <div class="dashboard-col col-right">
+                <div class="card glass-card">
+                    <div class="card-header flex-between">
+                        <h3>📝 Gizli Notlarım</h3>
+                        <button id="btn-show-note-modal" class="btn btn-primary btn-sm">+ Yeni Not</button>
+                    </div>
+                    <div id="notes-container" class="notes-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yeni Not Ekleme Modalı -->
+    <div id="note-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Yeni Gizli Not Ekle</h3>
+                <button id="btn-close-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Başlık</label>
+                    <input type="text" id="note-title-input" placeholder="Not başlığı...">
+                </div>
+                <div class="input-group">
+                    <label>İçerik</label>
+                    <textarea id="note-content-input" rows="5" placeholder="Sadece senin görebileceğin notlar..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-note" class="btn btn-secondary">Vazgeç</button>
+                <button id="btn-save-note" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

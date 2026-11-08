@@ -1,0 +1,15 @@
+{
+  "name": "test-site",
+  "version": "1.0.0",
+  "description": "0 Maliyetli Tek Kişilik Özel Web Sunucusu",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [],
+  "author": "Sinan Öztek",
+  "license": "MIT"
+}
